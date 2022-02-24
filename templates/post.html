@@ -1,0 +1,88 @@
+{% include "header.html" %}
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('{{post.img_url}}')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="post-heading">
+                    <h1>{{post.title}}</h1>
+                    <h2 class="subheading">{{post.subtitle}}</h2>
+                    <span class="meta">Posted by
+              <a href="#">{{post.author}}</a>
+              on {{post.date}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                {{ post.body|safe }}
+                <hr>
+
+                <div class="clearfix">
+                    <a class="btn btn-primary float-right" href="{{url_for('edit_post', post_id=post.id)}}">Edit
+                        Post</a>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</article>
+
+<section class="vh-100">
+    <div class="container py-5 h-1000">
+
+        <form action="{{ url_for('show_post', post_id=post.id) }}" method="post">
+            {{ form.csrf_token }}
+            {{ ckeditor.load() }}
+
+            <div class="row d-flex justify-content-center align-items-center h-100">
+
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+
+                            <h3 class="mb-5">Leave a comment</h3>
+
+                            <div class="form-outline mb-4">
+
+                                {{form.comment(class="form-control form-control-lg")}}
+                                <input type="hidden" id="postId" name="postId" value={{post.id}}>
+                            </div>
+
+                            {{form.submit(class="btn btn-primary btn-lg btn-block")}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+{% for p in blog.comments: %}
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="{{p.comment_author.email | gravatar}}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title"> {{p.comment_author.name }}</h5>
+    <p class="card-text">{{p.text | safe}}</p>
+  </div>
+</div>
+{%endfor%}
+<hr>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/>
+<br/>
+
+{% include "footer.html" %}
