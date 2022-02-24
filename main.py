@@ -18,17 +18,15 @@ from flask_gravatar import Gravatar
 from flask_wtf import FlaskForm
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
+app.config['SECRET_KEY'] = "8BYkEfBA6O6donzWlSihBXox7C0sKR6b"
+    #os.environ.get("SECRET_KEY")
 ckeditor = CKEditor(app)
 
 ##CONNECT TO DB
 
 uri = os.getenv("DATABASE_URL")  # or other relevant config var
-if uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
 # rest of connection code using the connection string `uri`
-
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://vybxxfdwbnwvnc:b185a8b3cc42d0ae6eb039e004ba07c5bc2588721f9d4e5ce32ef28976281881@ec2-50-19-32-96.compute-1.amazonaws.com:5432/d2cv4rfiot9i33"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 login_manager = LoginManager()
@@ -86,7 +84,7 @@ class Comment(db.Model):
     blogs = db.relationship("BlogPost", back_populates="comments")
 
 
-db.create_all()
+# db.create_all()
 
 
 class CommentForm(FlaskForm):
